@@ -10,6 +10,15 @@ const PRODUCTS_LISTING_QUERY = graphql`
         node {
           id
           title
+          images {
+            localFile {
+              childImageSharp {
+                fixed(width: 200) {
+                  ...GatsbyImageSharpFixed_withWebp_tracedSVG
+                }
+              }
+            }
+          }
           description
           descriptionHtml
           variants {
