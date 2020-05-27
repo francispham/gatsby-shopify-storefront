@@ -1,11 +1,20 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Gatsby Shopify Storefront`,
+    description: `E-commercial for Home Cook Food`,
+    author: `Viet Eat`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-source-shopify`,
+      options: {
+        shopName: `viet-eat`,
+        accessToken: `636e986360bb835928fdedfda57407ad`,
+        verbose: true,
+        paginationSize: 250,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
