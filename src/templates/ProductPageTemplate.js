@@ -18,6 +18,7 @@ export const query = graphql`
   query ProductsQuery($handle: String!) {
     shopifyProduct(handle: { eq: $handle }) {
       id
+      shopifyId
       title
       images {
         localFile {
