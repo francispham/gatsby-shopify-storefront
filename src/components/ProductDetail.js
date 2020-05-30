@@ -6,7 +6,13 @@ import { StoreContext } from "../context/StoreContext"
 const ProductDetail = ({ product }) => {
   const [SelectedVariant, setVariant] = useState(product.variants[0]);
   const { client } = useContext(StoreContext);
-  console.log('client:', client)
+  console.log('client:', client);
+
+  const addToCart = async () => {
+    const newCheckout = await client.checkout.create();
+    console.log('newCheckout:', newCheckout)
+  };
+  addToCart();
 
   return (
     <div>
