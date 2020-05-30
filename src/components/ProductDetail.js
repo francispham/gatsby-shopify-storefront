@@ -7,20 +7,20 @@ const ProductDetail = ({ product }) => {
   const [SelectedVariant, setVariant] = useState(product.variants[0]);
   const { client } = useContext(StoreContext);
 
-  const addToCart = async () => {
+  const addToCart = async (variantId) => {
     const newCheckout = await client.checkout.create();
     console.log(product.variants[0].id);  // Not the variant ID
     // => Shopify__ProductVariant__Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNDQzNTE5ODAyNTg5Mw==
     const lineItems = [
       {
-        variantId: product.variants[0].id.replace("Shopify__ProductVariant__", ""), // Getting real variant ID
+        variantId: variantId.replace("Shopify__ProductVariant__", ""), // Getting real variant ID
         quantity: 1,
       },
     ]
     const addItems = await client.checkout.addLineItems(newCheckout.id, lineItems);
+    window.open(addItems.webUrl, "_blank")
     console.log('addItems:', addItems.webUrl);
   };
-  addToCart();
 
   return (
     <div>
@@ -40,7 +40,8 @@ const ProductDetail = ({ product }) => {
             <option key={variant.id} value={variant.sku}>{variant.title}</option>
           ))
         }
-      </select>
+      </select>{' '}
+      <button onClick={() => addToCart(SelectedVariant.id)}>Buy Now</button>
     </div>
   )
 }
