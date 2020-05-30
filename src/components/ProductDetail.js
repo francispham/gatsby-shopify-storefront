@@ -9,11 +9,10 @@ const ProductDetail = ({ product }) => {
 
   const addToCart = async (variantId) => {
     const newCheckout = await client.checkout.create();
-    console.log(product.variants[0].id);  // Not the variant ID
-    // => Shopify__ProductVariant__Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNDQzNTE5ODAyNTg5Mw==
+
     const lineItems = [
       {
-        variantId: variantId.replace("Shopify__ProductVariant__", ""), // Getting real variant ID
+        variantId: variantId.replace("Shopify__ProductVariant__", ""),
         quantity: 1,
       },
     ]

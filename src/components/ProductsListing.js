@@ -10,6 +10,7 @@ const PRODUCTS_LISTING_QUERY = graphql`
         node {
           id
           title
+          handle
           images {
             localFile {
               childImageSharp {
