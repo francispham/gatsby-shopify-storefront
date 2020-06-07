@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 
 import Img from 'gatsby-image'
-import { StoreContext } from "../context/StoreContext"
+import { StoreContext } from "../../context/StoreContext"
 
 const ProductDetail = ({ product }) => {
   const [SelectedVariant, setVariant] = useState(product.variants[0]);

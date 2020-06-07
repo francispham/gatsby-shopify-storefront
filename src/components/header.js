@@ -1,32 +1,29 @@
+import React from "react"
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+
+import "../style.scss"
+import logo from "../images/coming-soon.png"
+import { FaShoppingCart } from "react-icons/fa"
 
 const Header = ({ siteTitle }) => (
   <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
+    className="navbar"
+    style={{ background: "var(--purp)", boxShadow: "var(--elevation-2)" }}
   >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
+    <div className="navbar-brand">
+      <Link to="/" className="navbar-item">
+        <img
+          style={{ height: 80, maxHeight: "none", marginBottom: 0 }}
+          src={logo}
+          alt="Level Up Logo"
+        />
+      </Link>
+    </div>
+    <div className="navbar-end">
+      <div className="navbar-item">
+        <FaShoppingCart style={{ color: "white", height: 30, width: 30 }} />
+      </div>
     </div>
   </header>
 )

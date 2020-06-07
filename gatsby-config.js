@@ -1,18 +1,19 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Shopify Storefront`,
-    description: `E-commercial for Home Cook Food`,
+    title: `Viet Eat on Shopify`,
+    description: `E-commercial for HomeMade Food`,
     author: `Viet Eat`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-sass`,
     {
       resolve: `gatsby-source-shopify`,
       options: {
         shopName: `viet-eat`,
         accessToken: `636e986360bb835928fdedfda57407ad`,
         verbose: true,
-        paginationSize: 250,
+        paginationSize: 20,
       },
     },
     {
