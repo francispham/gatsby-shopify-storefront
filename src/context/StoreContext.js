@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createContext, useState } from 'react'
 import Client from 'shopify-buy'
 
 export const client = Client.buildClient({
@@ -6,6 +6,19 @@ export const client = Client.buildClient({
   storefrontAccessToken: "636e986360bb835928fdedfda57407ad",
 });
 
-export const StoreContext = React.createContext({
+const defaultValues = {
   client,
-})
+  isCartOpen: false,
+  cart: [],
+  addProductToCart: () => { console.log('Added it!') }
+}
+
+export const StoreContext = createContext(defaultValues)
+
+export const StoreProvider = ({ children }) => {
+  return (
+    <StoreContext.Provider value={defaultValues}>
+      {children}
+    </StoreContext.Provider>
+  )
+}
