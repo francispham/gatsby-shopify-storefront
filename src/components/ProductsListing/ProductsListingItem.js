@@ -8,7 +8,8 @@ const ProductsListingItem = ({ product }) => {
   const {
     images: [firstImage],
     variants: [firstVariant],
-  } = product
+  } = product;
+
   return (
     <article className="column is-one-quarter content">
       <Link
@@ -19,7 +20,7 @@ const ProductsListingItem = ({ product }) => {
         <h3 className="title is-3">{product.title}</h3>
         <p className="subtitle is-4">${firstVariant.price}</p>
       </Link>
-      <AddToCart />
+      <AddToCart variantId={firstVariant.shopifyId} />
     </article>
   )
 }

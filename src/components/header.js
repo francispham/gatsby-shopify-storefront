@@ -8,7 +8,7 @@ import { FaShoppingCart } from "react-icons/fa"
 import { StoreContext } from '../context/StoreContext'
 
 const Header = ({ siteTitle }) => {
-  const { isCartOpen, addProductToCart } = useContext(StoreContext);
+  const { addProductToCart } = useContext(StoreContext);
 
   return (
     <header
