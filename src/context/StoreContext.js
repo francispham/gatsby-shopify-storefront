@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import Client from 'shopify-buy'
 
 export const client = Client.buildClient({
@@ -16,10 +16,24 @@ const defaultValues = {
 export const StoreContext = createContext(defaultValues)
 
 export const StoreProvider = ({ children }) => {
+  const [checkout, setCheckout] = useState({});
+
+  useEffect(() => {
+    initializedCheckout();
+  }, [])
+
+  const initializedCheckout = async () => {
+    try {
+      const newCheckout = await client.checkout.create();
+      setCheckout(newCheckout);
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   const addProductToCart = async variantId => {
     try {
-      const newCheckout = await client.checkout.create()
       const lineItems = [
         {
           variantId,
@@ -27,7 +41,7 @@ export const StoreProvider = ({ children }) => {
         },
       ]
       const addItems = await client.checkout.addLineItems(
-        newCheckout.id,
+        checkout.id,
         lineItems
       )
       // Buy Now Button Code:
@@ -35,7 +49,7 @@ export const StoreProvider = ({ children }) => {
 
       console.log(addItems.webUrl);
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
   return (
