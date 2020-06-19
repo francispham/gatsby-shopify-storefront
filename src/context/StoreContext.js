@@ -10,13 +10,16 @@ const defaultValues = {
   client,
   isCartOpen: false,
   cart: [],
-  addProductToCart: () => {}
+  addProductToCart: () => {},
+  checkout: {
+    lineItems: [],
+  }
 }
 
 export const StoreContext = createContext(defaultValues)
 
 export const StoreProvider = ({ children }) => {
-  const [checkout, setCheckout] = useState({});
+  const [checkout, setCheckout] = useState(defaultValues.checkout)
 
   useEffect(() => {
     initializedCheckout();
@@ -42,6 +45,7 @@ export const StoreProvider = ({ children }) => {
             localStorage.setItem('checkout_id', newCheckout.id);
           };
         };
+
       // Set checkout to State
       setCheckout(newCheckout);
     } catch (e) {
@@ -57,14 +61,15 @@ export const StoreProvider = ({ children }) => {
           quantity: 1
         },
       ]
-      const addItems = await client.checkout.addLineItems(
+      const newCheckout = await client.checkout.addLineItems(
         checkout.id,
         lineItems
       )
       // Buy Now Button Code:
-      // window.open(addItems.webUrl, "_blank");
-
-      console.log(addItems.webUrl);
+      // window.open(newCheckout.webUrl, "_blank");
+      
+      console.log(newCheckout.webUrl);
+      setCheckout(newCheckout);
     } catch (e) {
       console.error(e);
     }
@@ -72,6 +77,7 @@ export const StoreProvider = ({ children }) => {
   return (
     <StoreContext.Provider value={{
       ...defaultValues,
+      checkout,
       addProductToCart,
     }}>
       {children}

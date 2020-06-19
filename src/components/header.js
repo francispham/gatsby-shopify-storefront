@@ -1,11 +1,12 @@
-import React, { useContext } from "react"
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
+import React, { useContext } from "react"
+import { FaShoppingCart } from "react-icons/fa"
 
 import "../style.scss"
+import Cart from "./Cart/Cart"
 import logo from "../images/coming-soon.png"
-import { FaShoppingCart } from "react-icons/fa"
-import { StoreContext } from '../context/StoreContext'
+import { StoreContext } from "../context/StoreContext"
 
 const Header = ({ siteTitle }) => {
   const { addProductToCart } = useContext(StoreContext);
@@ -32,6 +33,7 @@ const Header = ({ siteTitle }) => {
           />
         </div>
       </div>
+      <Cart />
     </header>
   )
 }
