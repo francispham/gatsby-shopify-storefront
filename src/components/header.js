@@ -13,16 +13,16 @@ const Header = ({ siteTitle }) => {
   const { isCartOpen, toggleCartOpen } = useContext(StoreContext);
   const transition = useTransition(isCartOpen, null, {
     from: { transform: "translate3d(100%, 0, 0)" },
-    enter: { transform: "translate3d0, 0, 0)" },
+    enter: { transform: "translate3d0mai, 0, 0)" },
     leave: { transform: "translate3d(100%, 0, 0)" },
   })
 
   return (
     <header
-      className="navbar"
+      className="level is-mobile"
       style={{ background: "var(--purp)", boxShadow: "var(--elevation-2)" }}
     >
-      <div className="navbar-brand">
+      <div className="level-left">
         <Link to="/" className="navbar-item">
           <img
             style={{ height: 80, maxHeight: "none", marginBottom: 0 }}
@@ -31,9 +31,9 @@ const Header = ({ siteTitle }) => {
           />
         </Link>
       </div>
-      <div className="navbar-end">
+      <div className="level-right">
         <div className="navbar-item">
-          <button onClick={toggleCartOpen}>
+          <button className="button" style={{ background: "transparent", border: "none" }} onClick={toggleCartOpen}>
             <FaShoppingCart style={{ color: "white", height: 30, width: 30 }} />
           </button>
         </div>
