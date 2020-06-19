@@ -9,7 +9,6 @@ const Cart = ({ style }) => {
     toggleCartOpen, 
     removeProductFromCart 
   } = useContext(StoreContext)
-  // debugger;
 
   return (
     <animated.div
@@ -54,7 +53,9 @@ const Cart = ({ style }) => {
           </div>
           <div>
             <h4 className="title is-4">{item.title}</h4>
-            <p className="subtitle is-5">${item.variant.price}</p>
+            <p className="subtitle is-5">
+              ${item.variant.price} {item.variant.priceV2.currencyCode}
+            </p>
             <p className="subtitle is-5">Qlt: {item.quantity}</p>
             <button
               onClick={() => removeProductFromCart(item.id)}

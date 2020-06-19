@@ -10,12 +10,16 @@ import logo from "../images/coming-soon.png"
 import { StoreContext } from "../context/StoreContext"
 
 const Header = ({ siteTitle }) => {
-  const { isCartOpen, toggleCartOpen } = useContext(StoreContext);
+  const { isCartOpen, toggleCartOpen, checkout, } = useContext(StoreContext);
   const transition = useTransition(isCartOpen, null, {
     from: { transform: "translate3d(100%, 0, 0)" },
     enter: { transform: "translate3d0mai, 0, 0)" },
     leave: { transform: "translate3d(100%, 0, 0)" },
-  })
+  });
+  const qty = checkout.lineItems.reduce((total, item) => {
+    return total + item.quantity
+  }, 0);
+
 
   return (
     <header
@@ -33,12 +37,40 @@ const Header = ({ siteTitle }) => {
       </div>
       <div className="level-right">
         <div className="navbar-item">
-          <button className="button" style={{ background: "transparent", border: "none" }} onClick={toggleCartOpen}>
+          <button
+            className="button"
+            style={{
+              border: "none",
+              position: "relative",
+              background: "transparent",
+            }}
+            onClick={toggleCartOpen}
+          >
+            {qty > 0 && (
+              <div
+                style={{
+                  top: -5,
+                  left: -5,
+                  width: 30,
+                  height: 30,
+                  color: "white",
+                  borderRadius: 15,
+                  lineHeight: "30px",
+                  textAlign: "center",
+                  position: "absolute",
+                  background: "var(--red)",
+                }}
+              >
+                {qty}
+              </div>
+            )}
             <FaShoppingCart style={{ color: "white", height: 30, width: 30 }} />
           </button>
         </div>
       </div>
-      {transition.map(({ item, key, props }) => item && <Cart key={key} style={props} />)}
+      {transition.map(
+        ({ item, key, props }) => item && <Cart key={key} style={props} />
+      )}
     </header>
   )
 }
