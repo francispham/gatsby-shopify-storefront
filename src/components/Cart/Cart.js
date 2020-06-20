@@ -68,6 +68,15 @@ const Cart = ({ style }) => {
       ))}
       <hr />
       Total: <h5 className="title">${checkout.totalPrice}</h5>
+      <div style={{ marginTop: "2rem" }}>
+        <a
+          target="_blank"
+          href={checkout.webUrl}
+          className="button is-fullwidth is-primary"
+        >
+          Checkout Now
+        </a>
+      </div>
     </animated.div>
   )
 }
