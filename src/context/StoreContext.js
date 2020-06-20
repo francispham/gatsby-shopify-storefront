@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useCallback } from 'react'
 import Client from 'shopify-buy'
 
 export const client = Client.buildClient({
@@ -20,43 +20,57 @@ const defaultValues = {
 
 export const StoreContext = createContext(defaultValues)
 
+// Check if it's a Browser
+const isBrowser = typeof window !== 'undefined';
+
 export const StoreProvider = ({ children }) => {
-  const [checkout, setCheckout] = useState(defaultValues.checkout)
+  const [checkout, setCheckout] = useState(defaultValues.checkout);
   const [isCartOpen, setCartOpen] = useState(false);
+  // debugger;
 
   const toggleCartOpen = () => setCartOpen(!isCartOpen);
 
   useEffect(() => {
     initializedCheckout();
-  }, [])
+  })
 
-  const initializedCheckout = async () => {
+  const getNewId = async () => {
     try {
-      // Check if it's a Browser
-        const isBrowser = typeof window !== 'undefined';
-      // Check if id exists
-        const currentCheckoutId = isBrowser
-          ? localStorage.getItem('checkout_id')
-          : null;
-
-        let newCheckout = null;
-        if (currentCheckoutId) {
-          // If id exists, fetch checkout from Shopify
-          newCheckout = await client.checkout.fetch(currentCheckoutId);
-        } else {
-          // If id does not, create new checkout
-          newCheckout = await client.checkout.create();
-          if (isBrowser) {
-            localStorage.setItem('checkout_id', newCheckout.id);
-          };
-        };
-
-      // Set checkout to State
-      setCheckout(newCheckout);
+      const newCheckout = await client.checkout.create();
+      if (isBrowser) {
+        localStorage.setItem("checkout_id", newCheckout.id);
+      };
+      return newCheckout;
     } catch (e) {
       console.error(e);
     }
   }
+
+  const initializedCheckout = useCallback(async () => {
+    try {
+      // Check if id exists
+      const currentCheckoutId = isBrowser
+        ? localStorage.getItem("checkout_id")
+        : null
+
+      let newCheckout = null
+      if (currentCheckoutId) {
+        // If id exists, fetch checkout from Shopify
+        newCheckout = await client.checkout.fetch(currentCheckoutId)
+        // If, id exists, but the order was completed (completedAt exists)
+        if (newCheckout.completedAt) {
+          newCheckout = await getNewId()
+        }
+      } else {
+        // If id does not, create new checkout
+        newCheckout = await getNewId()
+      }
+      // Set checkout to State
+      setCheckout(newCheckout)
+    } catch (e) {
+      console.error(e)
+    }
+  }, [])
 
   const addProductToCart = async variantId => {
     try {
