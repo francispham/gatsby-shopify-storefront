@@ -1,12 +1,16 @@
 import React, { useContext } from "react"
 import { animated } from "react-spring"
 
+import Coupon from "./Coupon"
 import { StoreContext } from "../../context/StoreContext"
 
 const Cart = ({ style }) => {
-  const { checkout, toggleCartOpen, removeProductFromCart } = useContext(
-    StoreContext
-  )
+  const { 
+    checkout,
+    toggleCartOpen,
+    removeProductFromCart,
+    checkCoupon,
+  } = useContext(StoreContext);
 
   return (
     <animated.div
@@ -68,6 +72,7 @@ const Cart = ({ style }) => {
               </div>
             </div>
           ))}
+          <Coupon checkCoupon={checkCoupon} />
           <hr />
           <div>
             Total: <h5 className="title">${checkout.totalPrice}</h5>

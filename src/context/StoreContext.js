@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react'
+import React, { createContext, useState, useEffect, } from 'react'
 import Client from 'shopify-buy'
 
 export const client = Client.buildClient({
@@ -10,15 +10,16 @@ const defaultValues = {
   client,
   cart: [],
   isCartOpen: false,
+  checkCoupon: () => {},
   toggleCartOpen: () => {},
   addProductToCart: () => {},
   removeProductFromCart: () => {},
   checkout: {
     lineItems: [],
   },
-}
+};
 
-export const StoreContext = createContext(defaultValues)
+export const StoreContext = createContext(defaultValues);
 
 // Check if it's a Browser
 const isBrowser = typeof window !== 'undefined';
@@ -32,7 +33,7 @@ export const StoreProvider = ({ children }) => {
 
   useEffect(() => {
     initializedCheckout();
-  })
+  }, []);
 
   const getNewId = async () => {
     try {
@@ -44,9 +45,9 @@ export const StoreProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
-  const initializedCheckout = useCallback(async () => {
+  const initializedCheckout = async () => {
     try {
       // Check if id exists
       const currentCheckoutId = isBrowser
@@ -70,7 +71,7 @@ export const StoreProvider = ({ children }) => {
     } catch (e) {
       console.error(e)
     }
-  }, [])
+  };
 
   const addProductToCart = async variantId => {
     try {
@@ -92,7 +93,7 @@ export const StoreProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   const removeProductFromCart = async lineItemId => {
     // console.log('lineItemId:', lineItemId)
@@ -106,6 +107,12 @@ export const StoreProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const checkCoupon = async (coupon) => {
+    const newCheckout = await client.checkout.addDiscount(checkout.id, coupon);
+    // debugger;
+    setCheckout(newCheckout);
   }
 
   return (
@@ -114,6 +121,7 @@ export const StoreProvider = ({ children }) => {
         ...defaultValues,
         checkout,
         isCartOpen,
+        checkCoupon,
         toggleCartOpen,
         addProductToCart,
         removeProductFromCart,
