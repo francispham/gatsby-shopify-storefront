@@ -72,7 +72,7 @@ const Cart = ({ style }) => {
               </div>
             </div>
           ))}
-          <Coupon checkCoupon={checkCoupon} />
+          <Coupon checkCoupon={checkCoupon} checkout={checkout} />
           <hr />
           <div>
             Total: <h5 className="title">${checkout.totalPrice}</h5>
