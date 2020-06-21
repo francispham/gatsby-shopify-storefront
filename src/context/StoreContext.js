@@ -63,6 +63,7 @@ export const StoreProvider = ({ children }) => {
     initializedCheckout();
   }, []);
 
+  // Helping Method:
   const getNewId = async () => {
     try {
       const newCheckout = await client.checkout.create();
@@ -74,7 +75,7 @@ export const StoreProvider = ({ children }) => {
       console.error(e);
     }
   };
-
+  /* These are the Main Methods */ 
   const addProductToCart = async variantId => {
     try {
       setLoading(true);
