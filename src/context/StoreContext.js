@@ -9,6 +9,7 @@ export const client = Client.buildClient({
 const defaultValues = {
   client,
   cart: [],
+  isLoading: false,
   isCartOpen: false,
   checkCoupon: () => {},
   removeCoupon: () => {},
@@ -28,6 +29,7 @@ const isBrowser = typeof window !== 'undefined';
 export const StoreProvider = ({ children }) => {
   const [checkout, setCheckout] = useState(defaultValues.checkout);
   const [isCartOpen, setCartOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   // debugger;
 
   const toggleCartOpen = () => setCartOpen(!isCartOpen);
@@ -75,6 +77,7 @@ export const StoreProvider = ({ children }) => {
 
   const addProductToCart = async variantId => {
     try {
+      setLoading(true);
       const lineItems = [
         {
           variantId,
@@ -87,37 +90,45 @@ export const StoreProvider = ({ children }) => {
       )
       // Buy Now Button Code:
       // window.open(newCheckout.webUrl, "_blank");
+      // console.log(newCheckout.webUrl);
       
-      console.log(newCheckout.webUrl);
       setCheckout(newCheckout);
+      setLoading(false);
     } catch (e) {
       console.error(e);
     }
   };
-
+  
   const removeProductFromCart = async lineItemId => {
     // console.log('lineItemId:', lineItemId)
     try {
+      setLoading(true);
       const newCheckout = await client.checkout.removeLineItems(
         checkout.id,
         [lineItemId]
-      )
-      
+        )
+        
       setCheckout(newCheckout);
+      setLoading(false);
     } catch (e) {
       console.error(e);
     }
   };
 
   const checkCoupon = async (coupon) => {
+    setLoading(true);
+    setLoading(false);
     const newCheckout = await client.checkout.addDiscount(checkout.id, coupon);
-
+    
     setCheckout(newCheckout);
+    setLoading(false);
   }
   const removeCoupon = async (coupon) => {
+    setLoading(true);
     const newCheckout = await client.checkout.removeDiscount(checkout.id, coupon);
-
+    
     setCheckout(newCheckout);
+    setLoading(false);
   }
 
   return (
@@ -125,6 +136,7 @@ export const StoreProvider = ({ children }) => {
       value={{
         ...defaultValues,
         checkout,
+        isLoading,
         isCartOpen,
         checkCoupon,
         removeCoupon,

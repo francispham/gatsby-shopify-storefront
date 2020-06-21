@@ -40,7 +40,7 @@ const Coupon = ({ checkCoupon, removeCoupon, checkout }) => {
               />
             </label>
           </div>
-          <button className="button is-light is-rounded is-info">
+          <button type="submit" className="button is-light is-rounded is-info">
             Add Coupon
           </button>
         </form>
