@@ -1,26 +1,24 @@
 import React, { useState } from 'react'
 
-const Coupon = ({ checkCoupon, checkout }) => {
-  console.log('checkCoupon:', checkCoupon)
-  console.log('checkout:', checkout)
-  const [coupon, setCoupon] = useState("")
+const Coupon = ({ checkCoupon, removeCoupon, checkout }) => {
+  const [coupon, setCoupon] = useState("");
+
   return (
     <>
       {checkout.discountApplications.length > 0 ? (
-        <p>
+        <>
           Coupon
           <h5 className="title is-5">
             {checkout.discountApplications[0].code} -{" "}
             {checkout.discountApplications[0].value.percentage}% OFF
           </h5>
           <button
-            onClick={() => {}}
-            className="delete is-large"
-            style={{ background: "var(--red)" }}
+            onClick={removeCoupon}
+            className="button is-danger is-small is-outlined is-rounded"
           >
             Remove
           </button>
-        </p>
+        </>
       ) : (
         <form
           onSubmit={e => {

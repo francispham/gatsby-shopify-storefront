@@ -11,13 +11,14 @@ const defaultValues = {
   cart: [],
   isCartOpen: false,
   checkCoupon: () => {},
+  removeCoupon: () => {},
   toggleCartOpen: () => {},
   addProductToCart: () => {},
   removeProductFromCart: () => {},
   checkout: {
     lineItems: [],
   },
-};
+}
 
 export const StoreContext = createContext(defaultValues);
 
@@ -32,6 +33,31 @@ export const StoreProvider = ({ children }) => {
   const toggleCartOpen = () => setCartOpen(!isCartOpen);
 
   useEffect(() => {
+    const initializedCheckout = async () => {
+      try {
+        // Check if id exists
+        const currentCheckoutId = isBrowser
+          ? localStorage.getItem("checkout_id")
+          : null
+
+        let newCheckout = null
+        if (currentCheckoutId) {
+          // If id exists, fetch checkout from Shopify
+          newCheckout = await client.checkout.fetch(currentCheckoutId)
+          // If, id exists, but the order was completed (completedAt exists)
+          if (newCheckout.completedAt) {
+            newCheckout = await getNewId()
+          }
+        } else {
+          // If id does not, create new checkout
+          newCheckout = await getNewId()
+        }
+        // Set checkout to State
+        setCheckout(newCheckout)
+      } catch (e) {
+        console.error(e)
+      }
+    };
     initializedCheckout();
   }, []);
 
@@ -44,32 +70,6 @@ export const StoreProvider = ({ children }) => {
       return newCheckout;
     } catch (e) {
       console.error(e);
-    }
-  };
-
-  const initializedCheckout = async () => {
-    try {
-      // Check if id exists
-      const currentCheckoutId = isBrowser
-        ? localStorage.getItem("checkout_id")
-        : null
-
-      let newCheckout = null
-      if (currentCheckoutId) {
-        // If id exists, fetch checkout from Shopify
-        newCheckout = await client.checkout.fetch(currentCheckoutId)
-        // If, id exists, but the order was completed (completedAt exists)
-        if (newCheckout.completedAt) {
-          newCheckout = await getNewId()
-        }
-      } else {
-        // If id does not, create new checkout
-        newCheckout = await getNewId()
-      }
-      // Set checkout to State
-      setCheckout(newCheckout)
-    } catch (e) {
-      console.error(e)
     }
   };
 
@@ -111,7 +111,12 @@ export const StoreProvider = ({ children }) => {
 
   const checkCoupon = async (coupon) => {
     const newCheckout = await client.checkout.addDiscount(checkout.id, coupon);
-    // debugger;
+
+    setCheckout(newCheckout);
+  }
+  const removeCoupon = async (coupon) => {
+    const newCheckout = await client.checkout.removeDiscount(checkout.id, coupon);
+
     setCheckout(newCheckout);
   }
 
@@ -122,6 +127,7 @@ export const StoreProvider = ({ children }) => {
         checkout,
         isCartOpen,
         checkCoupon,
+        removeCoupon,
         toggleCartOpen,
         addProductToCart,
         removeProductFromCart,

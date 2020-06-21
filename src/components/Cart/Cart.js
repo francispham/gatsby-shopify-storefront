@@ -7,9 +7,10 @@ import { StoreContext } from "../../context/StoreContext"
 const Cart = ({ style }) => {
   const { 
     checkout,
+    checkCoupon,
+    removeCoupon,
     toggleCartOpen,
     removeProductFromCart,
-    checkCoupon,
   } = useContext(StoreContext);
 
   return (
@@ -72,7 +73,13 @@ const Cart = ({ style }) => {
               </div>
             </div>
           ))}
-          <Coupon checkCoupon={checkCoupon} checkout={checkout} />
+
+          <Coupon 
+            checkout={checkout} 
+            checkCoupon={checkCoupon} 
+            removeCoupon={removeCoupon} 
+          />
+
           <hr />
           <div>
             Total: <h5 className="title">${checkout.totalPrice}</h5>
