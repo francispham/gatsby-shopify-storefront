@@ -5,6 +5,7 @@ import { FaShoppingCart } from "react-icons/fa"
 import { useTransition } from 'react-spring'
 
 import "../style.scss"
+import Nav from "./Nav"
 import Loader from "./Loader"
 import Cart from "./Cart/Cart"
 import logo from "../images/coming-soon.png"
@@ -29,16 +30,17 @@ const Header = () => {
         style={{ background: "var(--purp)", boxShadow: "var(--elevation-2)" }}
       >
         <div className="level-left">
-          <Link to="/" className="navbar-item">
+          <Link to="/">
             <img
               style={{ height: 80, maxHeight: "none", marginBottom: 0 }}
               src={logo}
               alt="Level Up Logo"
             />
           </Link>
+          <Nav />
         </div>
         <div className="level-right">
-          <div className="navbar-item">
+          <div>
             <button
               className="button"
               style={{
