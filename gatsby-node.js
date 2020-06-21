@@ -24,4 +24,32 @@ exports.createPages = async ({ graphql, actions: { createPage }}) => {
       },
     })
   })
+
+
+  const collections = await graphql(`
+    query allShopifyCollections {
+      allShopifyCollection {
+        edges {
+          node {
+            id
+            title
+            handle
+          }
+        }
+      }
+    }
+  `)
+
+  collections.data.allShopifyCollection.edges.forEach(
+    ({ node: { id, handle } }) => {
+      createPage({
+        path: `/${handle}`,
+        component: path.resolve("./src/templates/ProductCategoryTemplate.js"),
+        context: {
+          id,
+          handle,
+        },
+      })
+    }
+  )
 }
