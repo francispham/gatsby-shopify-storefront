@@ -34,6 +34,7 @@ const Coupon = ({ checkCoupon, removeCoupon, checkout }) => {
                 id="coupon"
                 name="coupon"
                 value={coupon}
+                aria-label="coupon"
                 className="input is-info"
                 placeholder="Please Enter Your Coupon"
                 onChange={e => setCoupon(e.target.value)}
